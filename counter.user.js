@@ -7,7 +7,7 @@
 // @run-at      document-idle
 // @match       *://*/*
 // @grant       none
-// @version     1.0.1
+// @version     1.0.2
 // @updateURL   https://raw.githubusercontent.com/dacioromero/wm-userscripts/master/counter.user.js
 // @installURL  https://raw.githubusercontent.com/dacioromero/wm-userscripts/master/counter.user.js
 // @downloadURL https://raw.githubusercontent.com/dacioromero/wm-userscripts/master/counter.user.js
@@ -90,6 +90,13 @@ function handleMonetizationProgress (event) {
   counter.textContent = `${total.toFixed(assetScale)} ${assetCode}`
 }
 
+function handleMonetizationStop (event) {
+  if (!event.detail.finalized) return
+
+  total = 0
+  counter.textContent = ''
+}
+
 if (document.monetization) {
   document.head.appendChild(style)
   document.head.appendChild(font)
@@ -97,4 +104,5 @@ if (document.monetization) {
 
   counter.addEventListener('click', handleCounterClick)
   document.monetization.addEventListener('monetizationprogress', handleMonetizationProgress)
+  document.monetization.addEventListener('monetizationstop', handleMonetizationStop)
 }
